@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Accueil | Liste des vols{% endblock %}
+
+{% block body %}
+
+
+<section class="container">
+    <div class="row">
+        <div class="col">
+             <h1 class="text-center m-5">Bienvenue sur <span class="text-light bg-dark p-2">flights</span></h1>
+             <h2 class="p-2 text-secondary">Découvrez ici la liste des vols</h2>
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <th>Numéro de vol</th>
+                            <th>Départ</th>
+                            <th>Arrivée</th>
+                            <th>Prix</th>
+                            <th>Réduction</th>
+                            <th>Nombre de places</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for flight in flights %}
+                        <tr>
+                            <td>{{ flight.num }}</td>
+                            <td>{{ flight.departure ? flight.departure|date('d/m/Y') : '' }} <br> {{ flight.departure ? flight.departure|date('H:i') : '' }} <br> {{ flight.cityDeparture }}</td>
+                            <td>{{ flight.arrival ? flight.arrival|date('d/m/Y') : '' }} <br> {{ flight.arrival ? flight.arrival|date('H:i') : '' }} <br> {{ flight.cityArrival }} </td>
+                            <td>{{ flight.price|number_format(2, ',', ' ') }} €</td>
+                            <td>{{ flight.discount ? '<i class="fa-solid fa-square-check" style="color: #24c637; font-size:30px;"></i>' : '<i class="fa-solid fa-square-xmark" style="color: #d7373f; font-size:30px;"></i>' }}</td>
+                            <td>{{ flight.nbSeat }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="10">Aucun enregistrement trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        
+        </div>
+    </div>
+    
+
+</section>
+
+   
+
+    
+
+{% endblock %}

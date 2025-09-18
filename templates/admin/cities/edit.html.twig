@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Modifier la ville{% endblock %}
+
+{% block body %}
+
+<section class="container justify-content-center>
+    <div class="row">
+        <div class="col text-left">
+            <h1 class="mb-3">Modifier la ville</h1>
+
+            {{ include('admin/cities/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+        </div>
+        <div class="return d-flex justify-content-end">
+            <button class="btn btn-secondary m-3">
+                <a href="{{ path('cities_index') }}" style="text-decoration:none; color:#fff;">
+                    <i class="fa-solid fa-rotate-left" style="color: #fff;"></i>
+                Annuler</a>
+            </button>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

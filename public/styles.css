@@ -1,0 +1,122 @@
+
+/* Menu principal */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+#navLinks {
+    display: flex;
+    justify-content: end;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-link{
+    padding: 10px;
+}
+
+.nav-link.active{
+    background-color: #ffffff18;
+    border-radius: 4px;
+}
+
+.burger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background: #ffffff;
+    margin: 4px;
+    transition: 0.3s;
+}
+
+/* Messages d'erreur formulaires */
+.error{
+    color: rgb(255, 0, 0);
+    display: flex;
+}
+
+.error ul{
+    list-style-type: none;
+    padding: 5px 0px;
+}
+
+.error ul li{
+    background-color: #e0e0e0;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Checkboxes réduction vol + rôle utilisateur + termes inscription utilisateur */
+input#flights_discount{
+     margin: 10px;
+}
+
+input#flights_discount:checked{
+    accent-color:black;
+}
+
+input#registration_form_roles_0{
+    margin: 5px 10px;
+}
+
+input#registration_form_roles_1{
+    margin: 5px 10px 5px 30px;
+}
+
+input#registration_form_roles_0:checked, input#registration_form_roles_1:checked{
+    accent-color:black;
+}
+
+input#registration_form_agreeTerms{
+    margin: 5px 10px 5px 0;
+}
+
+input#registration_form_agreeTerms:checked{
+    accent-color:black;
+}
+
+/* Media queries */
+
+/* Version tablette landscape */
+@media screen and (max-width: 1024px) {
+    .nav-link{
+        font-size: 11px;
+    }
+}
+
+/* Version tablette et mobile */
+@media screen and (max-width: 768px) {
+    table{
+        font-size: 10px;
+    }
+    .nav-link{
+        font-size: 14px;
+    }
+    #navLinks {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        background: #21252a;
+        padding: 40px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    #navLinks.active {
+        display: flex;
+    }
+
+    .burger {
+        display: flex;
+        align-items: center;
+    }
+}

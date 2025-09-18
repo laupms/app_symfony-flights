@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Création d'une ville{% endblock %}
+
+{% block body %}
+
+<section class="container justify-content-center">
+    <div class="row">
+            <div class="col text-left">
+                 <h1 class="mb-3">Création d'une ville</h1>
+                
+                 {{ include('admin/cities/_form.html.twig') }}
+                 
+            </div>
+            <div class="return d-flex justify-content-end">
+                <button class="btn btn-secondary d-flex">
+                    <a style="text-decoration:none; color:#fff;" href="{{ path('cities_index') }}">
+                        <i class="fa-solid fa-rotate-left" style="color: #fff;"></i>
+                    Annuler</a>
+                </button>
+            </div>
+    
+    </div>
+</section>
+{% endblock %}
+

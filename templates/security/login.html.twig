@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Connexion | M'identifier{% endblock %}
+
+{% block body %}
+
+<section class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">Le nom d'utilisateur et/ou le mot de passe est invalide. <br> Veuillez entrer des identifiants valides.</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        Êtes-vous {{ app.user.userIdentifier }} ? Sinon, <a onmouseover="mouseover(color:red)" style="text-decoration:none; color:#000; " href="{{ path('app_logout') }}">Me déconnecter</a>
+                    </div>
+                {% endif %}
+
+                <h1 class="h3 mb-3 font-weight-normal">M'identifier</h1>
+                <label for="inputUsername" class="mb-2 mt-3" >Nom d'utilisateur</label>
+                <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+                <label for="inputPassword" class="mb-2 mt-3">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+                <input type="hidden" name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
+                >
+
+                <button class="btn btn-lg btn-primary mt-3" type="submit">
+                    Me connecter
+                </button>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</section>
+
+{% endblock %}
