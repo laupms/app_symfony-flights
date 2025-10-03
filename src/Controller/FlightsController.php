@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/')]
 class FlightsController extends AbstractController
 {
-    // affichage de la page d'accueil avec la liste des vols sans pouvoir la modifier, por un visiteur lambda
+    // affichage de la page d'accueil avec la liste des vols sans pouvoir la modifier, pour un visiteur lambda
     #[Route('/', name: 'app_flights_index', methods: ['GET'])]
     public function index(FlightsRepository $flightsRepository): Response
     {

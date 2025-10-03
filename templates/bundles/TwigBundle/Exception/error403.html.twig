@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Page introuvable | Erreur {{ status_code }}{% endblock%}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>ERREUR {{ status_code }} : Oups ! La page est introuvable...</h1>
+            <p>Veuillez revenir sur la page d'accueil → {% if is_granted ('ROLE_ADMIN') %}
+                <a class="{{ app.request.attributes.get('_route') == 'admin_index' ? 'active' : '' }}" href="/admin">Accueil</a>
+                {% else %}
+                <a class="{{ app.request.attributes.get('_route') == 'app_flights_index' ? 'active' : '' }}" href="/">Accueil</a>
+                {% endif %}
+            </p> 
+        </div>
+    </div>
+</div>
+
+{% endblock%}
