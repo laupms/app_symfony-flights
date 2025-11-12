@@ -5,13 +5,89 @@
 
     {% block body %}
 
-    <section class="container">
-        <div class="row ">
-            <div class="col" >
-                <h1 style="display:flex; justify-content:center;">Bienvenue ! </h1>
-            </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Bienvenue sur <span class="welcome-flights">flights</span></h1>
+            <p>La plateforme de gestion de vols aériens</p>
         </div>
+    </section>
 
+    <section class="container my-5 text-center">
+        <h2 class="text-center mb-4">Derniers vols ajoutés</h2>
+
+        {% if lastFlights is not empty %}
+            <div class="row justify-content-center">
+                {% for flight in lastFlights %}
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card shadow-sm h-100 text-center p-3">
+                            <h5 class="fw-bold">{{ flight.num }}</h5>
+                            <p>{{ flight.airportDeparture.name }} → {{ flight.airportArrival.name }}</p>
+                            <p class="small text-muted">
+                                Départ : {{ flight.departure|date('d/m/Y H:i') }}
+                            </p>
+                            <p class="small text-muted">
+                                Arrivée : {{ flight.arrival|date('d/m/Y H:i') }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-muted">Aucun vol récent pour le moment.</p>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn-slide slide-right" href="{{ path('admin_flights')}}" style="text-decoration:none;">Voir tous les vols</a>
+        {% else %}
+                <a class="btn-slide slide-right" href="{{ path('app_flights_index')}}" style="text-decoration:none;" >Voir tous les vols</a>
+        {% endif %}
+
+
+    </section>
+
+    <section class="container my-5 text-center">
+        <h2 class="text-center mb-4">Derniers aéroports ajoutés</h2>
+        {% if lastAirport is not empty %}
+            <div class="row justify-content-center">
+                {% for airport in lastAirport %}
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card p-3 shadow-sm text-center justify-content-center" style="height: 25vh;">
+                            <h5>{{ airport.name }}</h5>
+                            <p>{{ airport.cityId.name }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-muted">Aucun aéroport récent pour le moment.</p>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn-slide slide-right" href="{{ path('admin_airport')}}" style="text-decoration:none;" >Voir tous les aéroports</a>
+        {% endif %}
+    </section>
+
+
+
+    <section class="container my-5 text-center">
+        <h2 class="text-center mb-4">Dernières compagnies ajoutées</h2>
+        {% if lastAirport is not empty %}
+            <div class="row justify-content-center">
+                {% for airline in lastAirline %}
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card p-3 shadow-sm text-center d-flex justify-content-center" style="height: 10vh;">
+                            <img class="rounded mx-auto d-block" src="{{ asset('img/logo-airlines/' ~ airline.logo) }}" alt="{{ airline.name }}" title="{{ airline.name }}" width="100">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-muted">Aucune compagnie aérienne récente pour le moment.</p>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn-slide slide-right" href="{{ path('admin_airline')}}" style="text-decoration:none;" >Voir tous les compagnies</a>
+        {% endif %}
     </section>
 
     {% endblock %}

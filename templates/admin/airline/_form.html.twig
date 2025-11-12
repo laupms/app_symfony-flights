@@ -1,0 +1,26 @@
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+    <div class="error m-1">{{ form_errors(form.name)}}</div>
+
+
+    {{ form_label(form.logo) }}
+    {{ form_widget(form.logo) }}
+    {% if airline.id is defined and airline.id %}
+        <p class="title-info">Laissez ce champs vide pour conserver le logo actuel.</p>
+        {% if airline.logo %}
+            <div class="mb-3">
+                <label>Logo actuel :</label><br>
+                <img src="{{ asset('img/logo-airlines/' ~ airline.logo) }}" alt="Logo actuel" style="width:300px;">
+            </div>
+        {% endif %}
+    {% endif %}
+    <div class="error m-1">{{ form_errors(form.logo)}}</div>
+
+    <div style="justify-self:center;">
+        <button class="btn btn-slide-save slide-right-save mt-3">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+
+{{ form_end(form) }}

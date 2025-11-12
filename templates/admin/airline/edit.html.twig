@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Modifier la compagnie aérienne{% endblock %}
+
+{% block body %}
+
+<section class="hero-form">
+    <div class="hero-form-content">
+        <h1>Modifier la compagnie aerienne</h1>
+        <h2>{{ airline.name }}</h2>
+    </div>
+</section>
+
+<section class="container py-5 justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-7 text-left" style="padding:20px;">
+
+            {{ include('admin/airline/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+        </div>
+
+        <div class="return d-flex justify-content-end">
+            <a class="btn-slide slide-right m-3" href="{{ path('admin_airline')}}" style="text-decoration:none;" ><i class="fa-solid fa-rotate-left"></i> Retour à la liste</a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

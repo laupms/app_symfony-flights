@@ -13,7 +13,8 @@ use Symfony\Component\String\ByteString;
 use App\Repository\CitiesRepository;
 use App\Repository\UserRepository;
 use App\Repository\FlightsRepository;
-
+use App\Repository\AirlineRepository;
+use App\Repository\DiscountRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,33 +24,37 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class AdminController extends AbstractController
 {
-    //liste villes
-    #[Route('/cities', name: 'cities_')]
-    public function citiesList(CitiesRepository $cities){
-        return $this->render("admin/cities/index.html.twig", [
-            'cities' => $cities ->findAll()
-        ]);
-    }
+    // //liste villes
+    // #[Route('/cities', name: 'cities')]
+    // public function citiesList(CitiesRepository $cities){
+    //     return $this->render("admin/cities/index.html.twig", [
+    //         'cities' => $cities ->findAll()
+    //     ]);
+    // }
 
-    //liste utilisateurs
-    #[Route('/user', name: 'user_')]
-    public function userList(UserRepository $user){
-        return $this->render("admin/user/index.html.twig", [
-            'user' => $user ->findAll()
-        ]);
-    }
+    // //liste utilisateurs
+    // #[Route('/user', name: 'user')]
+    // public function userList(UserRepository $user){
+
+        
+    //     return $this->render("admin/user/index.html.twig", [
+    //         'user' => $user ->findAll()
+    //     ]);
+    // }
 
     //liste vols
-    #[Route('/', name: 'index')]
-    public function flightsList(FlightsRepository $flights){
+    #[Route('/flights', name: 'flights')]
+    public function flightsList(FlightsRepository $flights, AirlineRepository $airlineRepository):Response{
+        $airline = $airlineRepository->findBy([], ['name' => 'ASC']);
         return $this->render("admin/flights/index.html.twig", [
-            'flights' => $flights ->findAll()
+            'flights' => $flights ->findAll(),
+            'airline' => $airline,
         ]);
     }
 
     //créer nouveau vol
     #[Route('/flights/new', name: 'flights_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, DiscountRepository $discountRepository): Response
     {
         $flight = new Flights();
 
@@ -60,10 +65,13 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->applyDiscount($flight, $discountRepository);
+
             $entityManager->persist($flight);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_flights', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/flights/new.html.twig', [
@@ -83,15 +91,18 @@ class AdminController extends AbstractController
 
     //modifier un vol dans la liste
     #[Route('/flights/{id}/edit', name: 'flights_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Flights $flight, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Flights $flight, EntityManagerInterface $entityManager, DiscountRepository $discountRepository): Response
     {
         $form = $this->createForm(FlightsType::class, $flight);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->applyDiscount($flight, $discountRepository);
+
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_flights', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/flights/edit.html.twig', [
@@ -109,7 +120,31 @@ class AdminController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_flights', [], Response::HTTP_SEE_OTHER);
+    }
+
+    //calcul de la réduction
+    private function applyDiscount(Flights $flight, DiscountRepository $discountRepository): void
+    {
+        $price = $flight->getPrice();
+        $airline = $flight->getAirline();
+        $departure = $flight->getDeparture();
+
+        $discount = $discountRepository->findOneBy(['airline' => $airline]);
+
+        // Vérification que la réduction est valide
+        if (
+            $discount &&
+            $discount->getAirline() === $flight->getAirline() &&
+            $discount->getDateStart() <= $departure &&
+            $discount->getDateEnd() >= $departure
+        ) {
+            $newPrice = max($price - $discount->getValue(), 0);
+        } else {
+            $newPrice = $price;
+        }
+
+        $flight->setPriceAfterDiscount($newPrice);
     }
 
 }

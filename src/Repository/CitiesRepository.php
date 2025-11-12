@@ -21,6 +21,18 @@ class CitiesRepository extends ServiceEntityRepository
         parent::__construct($registry, Cities::class);
     }
 
+    /**
+    * Retourne toutes les villes triées par ordre alphabétique (ASC)
+    */
+    public function findAllOrderedByName():array
+    {
+    return $this->createQueryBuilder('c')
+        ->orderBy('c.name', 'ASC')
+        ->getQuery()
+        ->getResult();
+    }
+
+
 //    /**
 //     * @return Cities[] Returns an array of Cities objects
 //     */

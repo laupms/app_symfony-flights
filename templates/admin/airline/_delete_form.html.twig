@@ -1,0 +1,7 @@
+<form method="post" action="{{ path('admin_airline_delete', {'id': airline.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette compagnie ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ airline.id) }}">
+
+    <button title="Supprimer" class="btn delete-btn m-1 actions-size" aria-label="Supprimer">
+        <i alt="Supprimer" class="fa-solid fa-trash-can"></i>
+    </button>
+</form>

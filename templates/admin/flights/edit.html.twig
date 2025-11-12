@@ -3,21 +3,27 @@
 {% block title %}flights - Modifier vol {{ flight.num }} {% endblock %}
 
 {% block body %}
-<section class="container justify-content-center>
-    <div class="row">
-        <div class="col text-left">
-            <h1>Modifier le vol {{ flight.num }}</h1>
+
+<section class="hero-form">
+    <div class="hero-form-content">
+        <h1>Modifier le vol</h1>
+        <h2>vol {{ flight.num }}</h2>
+    </div>
+</section>
+
+<section class="container justify-content-center">
+    <div class="row justify-content-center">
+
+        <div class="col-7 text-left" style="padding:20px;">
 
             {{ include('admin/flights/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
         </div>
+
         <div class="return d-flex justify-content-end">
-            <button class="btn btn-secondary m-3">
-                <a href="{{ path('admin_index') }}" style="text-decoration:none; color:#fff">
-                    <i class="fa-solid fa-rotate-left" style="color: #fff;"></i>
-                Annuler</a>
-            </button>
+            <a class="btn-slide slide-right m-3" href="{{ path('admin_flights')}}" style="text-decoration:none;" ><i class="fa-solid fa-rotate-left"></i> Retour à la liste</a>
         </div>
+
     </div>
 </section>
 

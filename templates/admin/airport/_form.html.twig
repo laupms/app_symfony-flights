@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+    <div class="error m-1">{{ form_errors(form.name)}}</div>
+
+    {{ form_label(form.code) }}
+    {{ form_widget(form.code, { 'attr':{'style': 'text-transform: uppercase;'}}) }}
+    <div class="error m-1">{{ form_errors(form.code)}}</div>
+
+    {{ form_label(form.city_id) }}
+    {{ form_widget(form.city_id) }}
+    <div class="error m-1">{{ form_errors(form.city_id)}}</div>
+
+    <div style="justify-self:center;">
+        <button class="btn btn-slide-save slide-right-save mt-3">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+
+{{ form_end(form) }}

@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Informations sur le vol {{ flight.num }}{% endblock %}
+
+{% block body %}
+
+<section class="hero-show">
+    <div class="hero-show-content">
+        <h1>Informations</h1>
+        <h2 class="m-3">vol {{ flight.num }}</h2>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row row-show">
+        <div class="col-12 text-center">
+
+            <table class="table table-width">
+                <tr>
+                    <td colspan="4">
+                        {% if flight.tags|length > 0 %}
+                            {% for tag in flight.tags %}
+                                {% if tag.name == 'Vol direct'%}
+                                    {% set color = '#0078d7' %}
+                                {% elseif tag.name == 'Premium'%}
+                                    {% set color = '#c49b00' %}
+                                {% elseif tag.name == 'Éco-responsable'%}
+                                    {% set color = '#2e8b57' %}
+                                {% elseif tag.name == 'Dernières places'%}
+                                    {% set color = '#d7373f' %}
+                                {% else %}
+                                    {% set color = '#595959ff' %}
+                                {% endif %}
+
+                                <span class="badge" style="background-color: {{ color }}; color: #fff; padding: 5px 10px; border-radius: 8px;">
+                                    {{ tag.name }}
+                                </span>
+
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:0 100px 10px 0;">
+                        <span class="title-info">Numéro de vol</span><br><span style="font-size:30px;">{{ flight.num }}</span>
+                    </td>
+
+                    <td>
+                        <span class="title-info">Compagnie aérienne</span>
+                        <br>
+                        <img src="{{ asset('img/logo-airlines/' ~ flight.airline.logo) }}" alt="{{ flight.airline.name }}" width="50%">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <span class="title-info">Départ</span>
+                        <br>
+                        {{ flight.departure ? flight.departure|date('d/m/Y') : '' }} à {{ flight.departure ? flight.departure|date('H:i') : '' }}
+                    </td>
+                     <td>
+                        <span class="title-info">Aéroport de départ</span>
+                        <br>
+                        {{ flight.airportDeparture.name }} à {{ flight.airportDeparture.cityId }} 
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="title-info">Arrivée</span>
+                        <br>
+                        {{ flight.arrival ? flight.arrival|date('d/m/Y') : '' }} à {{ flight.arrival ? flight.arrival|date('H:i') : '' }}
+                    </td>
+                    <td>
+                        <span class="title-info">Aéroport d'arrivée</span>
+                        <br>
+                        {{ flight.airportArrival.name }} à {{ flight.airportArrival.cityId }} 
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <span class="title-info">Prix</span>
+                        <br>
+                        {% if flight.priceAfterDiscount is not null and flight.priceAfterDiscount < flight.price %}
+                            <span style="font-size:18px;" class="text-success">
+                                {{ flight.priceAfterDiscount|number_format(2, ',', ' ') }} €
+                            </span>
+                            <br>
+                            <small class="text-muted"><s>{{ flight.price|number_format(2, ',', ' ') }} €</s></small>
+                            <div class="d-flex" style="align-items:baseline;">
+                                <i class="fa-solid fa-check" style="color: #24c637; font-size:20px;"></i><p class="title-info" style="padding-left:5px;">Réduction</p>
+                            </div>
+                        {% else %}
+                            <span style="font-size:18px;">{{ flight.price|number_format(2, ',', ' ') }} €</span>
+                            <div class="d-flex" style="align-items:baseline;">
+                                <i class="fa-solid fa-xmark" style="color: #d7373f; font-size:20px;"></i><p class="title-info" style="padding-left:5px;">Pas de réduction</p>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="title-info">Nombre de places</span>
+                        <br>
+                        {{ flight.nbSeat }} places disponibles
+                    </td>
+                </tr>
+            </table>
+
+            <div class="return d-flex justify-content-end">
+                <a class="btn-slide slide-right m-3" href="{{ path('app_flights_index')}}" style="text-decoration:none;" ><i class="fa-solid fa-rotate-left"></i> Retour à la liste</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -6,7 +6,15 @@
         {{ form_errors(form.name) }}
     </div>
 
-    <button class="btn btn-success m-3">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_label(form.country) }}
+    {{ form_widget(form.country) }}
+    <div class="error m-1">
+        {{ form_errors(form.country) }}
+    </div>
+
+    <div style="justify-self:center;">
+        <button class="btn btn-slide-save slide-right-save mt-3">{{ button_label|default('Enregistrer') }}</button>
+    </div>
     
 {{ form_end(form) }}
 

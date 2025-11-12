@@ -1,47 +1,49 @@
-
-
-</style>
-
-
 {{ form_start(form) }}
-    
+
     {{ form_label(form.num) }}
     {{ form_widget(form.num) }}
+
+    {{ form_label(form.airline) }}
+    {{ form_widget(form.airline) }}
+    <div class="error m-1">{{ form_errors(form.airline)}}</div>
 
     {{ form_label(form.departure) }}
     {{ form_widget(form.departure) }}
     <div class="error m-1">{{ form_errors(form.departure)}}</div>
 
-    {{ form_label(form.city_departure) }}
-    {{ form_widget(form.city_departure) }}
-     <div class="error m-1">{{ form_errors(form.city_departure) }}</div>
+    {{ form_label(form.airport_departure) }}
+    {{ form_widget(form.airport_departure) }}
+    <div class="error m-1">{{ form_errors(form.airport_departure) }}</div>
 
     {{ form_label(form.arrival) }}
     {{ form_widget(form.arrival) }}
      <div class="error m-1">{{ form_errors(form.arrival) }}</div>
-   
 
-    {{ form_label(form.city_arrival) }}
-    {{ form_widget(form.city_arrival) }}
-     <div class="error m-1">{{ form_errors(form.city_arrival) }}</div>
+    {{ form_label(form.airport_arrival) }}
+    {{ form_widget(form.airport_arrival) }}
+    <div class="error m-1">{{ form_errors(form.airport_arrival) }}</div>
 
     {{ form_label(form.price) }}
     {{ form_widget(form.price) }}
     <div class="error m-1">{{ form_errors(form.price) }}</div>
-   
-    {{ form_widget(form.discount) }}
-    {{ form_label(form.discount) }}
-  
-
-    <br>
 
     {{ form_label(form.nb_seat) }}
     {{ form_widget(form.nb_seat) }}
     <div class="error m-1">{{ form_errors(form.nb_seat) }}</div>
+
+    {{ form_label(form.tags) }}
+    <div class="tags-checkboxes">   
+        {% for tag in form.tags %}
+        <div class="form-check">
+            {{ form_widget(tag) }}
+            {{ form_label(tag) }}
+        </div>
+        {% endfor %}
+    </div>
+
     
-
-    <button class="btn btn-success m-3">{{ button_label|default('Enregistrer') }}</button>
-
-
+    <div style="justify-self:center;">
+        <button class="btn btn-slide-save slide-right-save mt-3">{{ button_label|default('Enregistrer') }}</button>
+    </div>
 {{ form_end(form) }}
 

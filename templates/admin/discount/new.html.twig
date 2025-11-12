@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Nouvelle réduction{% endblock %}
+
+{% block body %}
+
+<section class="hero-form">
+    <div class="hero-form-content">
+        <h1>Nouvelle reduction</h1>
+    </div>
+</section>
+
+<section class="container py-5 justify-content-center">
+    <div class="row justify-content-center">
+      
+        <div class="col-7 text-left" style="padding:20px;">
+
+            {{ include('admin/discount/_form.html.twig') }}
+            
+        </div>
+
+        <div class="return d-flex justify-content-end">
+            <a class="btn-slide slide-right m-3" href="{{ path('admin_discount')}}" style="text-decoration:none;" ><i class="fa-solid fa-rotate-left"></i> Retour à la liste</a>
+        </div>
+      
+    </div>
+</section>
+
+{% endblock %}

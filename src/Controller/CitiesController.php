@@ -11,15 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('admin/cities')]
+#[Route('admin/cities', name: 'admin_')]
 class CitiesController extends AbstractController
 {
     //liste des villes
-    #[Route('/', name: 'cities_index', methods: ['GET'])]
+    #[Route('/', name: 'cities', methods: ['GET'])]
     public function index(CitiesRepository $citiesRepository): Response
     {
-        return $this->render('cities/index.html.twig', [
-            'cities' => $citiesRepository->findAll(),
+        return $this->render('admin/cities/index.html.twig', [
+            'cities' => $citiesRepository->findAllOrderedByName(),
         ]);
     }
 
@@ -36,7 +36,7 @@ class CitiesController extends AbstractController
             $entityManager->persist($city);
             $entityManager->flush();
 
-            return $this->redirectToRoute('cities_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_cities', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/cities/new.html.twig', [
@@ -55,7 +55,7 @@ class CitiesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('cities_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_cities', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/cities/edit.html.twig', [
@@ -73,6 +73,6 @@ class CitiesController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('cities_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_cities', [], Response::HTTP_SEE_OTHER);
     }
 }

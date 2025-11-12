@@ -21,6 +21,31 @@ class FlightsRepository extends ServiceEntityRepository
         parent::__construct($registry, Flights::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('f')
+               ->orderBy('f.departure', 'DESC')
+               ->getQuery()
+               ->getResult()
+           ;
+    }
+
+    /**
+    * Retourne les 3 derniers vols
+    */
+    public function findLastFlights(int $limit = 3): array
+    {
+        return $this->createQueryBuilder('f')
+               ->orderBy('f.id', 'DESC')
+               ->setMaxResults($limit)
+               ->getQuery()
+               ->getResult()
+           ;
+    }
+
+
+
+
 //    /**
 //     * @return Flights[] Returns an array of Flights objects
 //     */

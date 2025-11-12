@@ -4,50 +4,195 @@
 
 {% block body %}
 
+<section class="hero-flights">
+    <div class="hero-flights-content">
+        <h1>Vols aeriens</h1>
+    </div>
+</section>
 
-<section class="container">
-    <div class="row">
-        <div class="col">
-             <h1 class="text-center m-5">Bienvenue sur <span class="text-light bg-dark p-2">flights</span></h1>
-             <h2 class="p-2 text-secondary">Découvrez ici la liste des vols</h2>
-                <table class="table text-center">
-                    <thead>
-                        <tr>
-                            <th>Numéro de vol</th>
-                            <th>Départ</th>
-                            <th>Arrivée</th>
-                            <th>Prix</th>
-                            <th>Réduction</th>
-                            <th>Nombre de places</th>
-                        </tr>
-                    </thead>
+<div class="d-flex justify-content-between align-items-center mb-3 p-3">
+    
+    <div class="d-flex gap-3">
+        <select id="sortByDate" class="form-select">
+            <option value="desc">Plus récents</option>
+            <option value="asc">Plus anciens</option>
+        </select>
+
+        <select id="filterByAirline" class="form-select">
+            <option value="all">Toutes les compagnies</option>
+            {% for al in airline %}
+                <option value="{{ al.name }}">{{ al.name }}</option>
+            {% endfor %}
+        </select>
+
+        <select id="filterByTag" class="form-select">
+            <option value="all">Tous les tags</option>
+            <option value="Vol direct">Vol direct</option>
+            <option value="Premium">Premium</option>
+            <option value="Éco-responsable">Éco-responsable</option>
+            <option value="Dernières places">Dernières places</option>
+        </select>
+    </div>
+</div>
+
+<section class="container pb-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            <div id="noResultsMessage" class="text-center mt-3 title-info" style="display: none; font-weight: 500;">
+            Aucun vol ne correspond à votre recherche.
+            </div>
+
+                <table id="flightsTable" class="table text-center table-width">
                     <tbody>
-
                     {% for flight in flights %}
-                        <tr>
-                            <td>{{ flight.num }}</td>
-                            <td>{{ flight.departure ? flight.departure|date('d/m/Y') : '' }} <br> {{ flight.departure ? flight.departure|date('H:i') : '' }} <br> {{ flight.cityDeparture }}</td>
-                            <td>{{ flight.arrival ? flight.arrival|date('d/m/Y') : '' }} <br> {{ flight.arrival ? flight.arrival|date('H:i') : '' }} <br> {{ flight.cityArrival }} </td>
-                            <td>{{ flight.price|number_format(2, ',', ' ') }} €</td>
-                            <td>{{ flight.discount ? '<i class="fa-solid fa-square-check" style="color: #24c637; font-size:30px;"></i>' : '<i class="fa-solid fa-square-xmark" style="color: #d7373f; font-size:30px;"></i>' }}</td>
-                            <td>{{ flight.nbSeat }}</td>
+                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airline.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
+                            <td colspan="4">
+                                {% if flight.tags|length > 0 %}
+                                    {% for tag in flight.tags %}
+                                        {% if tag.name == 'Vol direct'%}
+                                            {% set color = '#0078d7' %}
+                                        {% elseif tag.name == 'Premium'%}
+                                            {% set color = '#c49b00' %}
+                                        {% elseif tag.name == 'Éco-responsable'%}
+                                            {% set color = '#2e8b57' %}
+                                        {% elseif tag.name == 'Dernières places'%}
+                                            {% set color = '#d7373f' %}
+                                        {% else %}
+                                            {% set color = '#595959ff' %}
+                                        {% endif %}
+
+                                        <span class="badge" style="background-color: {{ color }}; color: #fff; padding: 5px 10px; border-radius: 8px;">
+                                            {{ tag.name }}
+                                        </span>
+
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
                         </tr>
+                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airline.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
+                            <td><span class="title-info">Numéro de vol</span><br><span style="font-size:30px;">{{ flight.num }}</span></td>
+                            <td><span class="title-info">Départ</span><br>{{ flight.departure ? flight.departure|date('d/m/Y') : '' }} à {{ flight.departure ? flight.departure|date('H:i') : '' }} <br> {{ flight.airportDeparture.name }}</td>
+                            <td><span class="title-info">Arrivée</span><br>{{ flight.arrival ? flight.arrival|date('d/m/Y') : '' }} à {{ flight.arrival ? flight.arrival|date('H:i') : '' }} <br> {{ flight.airportArrival.name }} </td>
+                            {% if is_granted ('ROLE_USER') %}
+                            <td rowspan="2" style="align-content:center;">
+                                <button class="btn show-btn m-1 actions-size" title="Voir">
+                                    <a href="{{ path('app_flights_show', {'id': flight.id}) }}" style="text-decoration:none; color:#ffffff;">
+                                        <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                </button>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airline.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
+                            <td>
+                                <img src="{{ asset('img/logo-airlines/' ~ flight.airline.logo) }}" alt="{{ flight.airline.name }}" width="100">
+                            </td>
+                            <td>
+                            {% if flight.priceAfterDiscount is not null and flight.priceAfterDiscount < flight.price %}
+                                <span style="font-size:18px;" class="text-success">
+                                    {{ flight.priceAfterDiscount|number_format(2, ',', ' ') }} €
+                                </span>
+                                <br>
+                                <small class="text-muted"><s>{{ flight.price|number_format(2, ',', ' ') }} €</s></small>
+                                <div class="d-flex" style="align-items:baseline;">
+                                    <i class="fa-solid fa-check" style="color: #24c637; font-size:20px;"></i><p class="title-info" style="padding-left:5px;">Réduction</p>
+                                </div>
+                            {% else %}
+                                <span style="font-size:18px;">{{ flight.price|number_format(2, ',', ' ') }} €</span>
+                                <div class="d-flex" style="align-items:baseline;">
+                                    <i class="fa-solid fa-xmark" style="color: #d7373f; font-size:20px;"></i><p class="title-info" style="padding-left:5px;">Pas de réduction</p>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ flight.nbSeat }} places disponibles</td>
+                        </tr>
+
+                        <tr class="spacer" style="height:40px;"></tr>
+
                     {% else %}
                         <tr>
                             <td colspan="10">Aucun enregistrement trouvé</td>
                         </tr>
                     {% endfor %}
                     </tbody>
+
                 </table>
-        
         </div>
     </div>
-    
-
 </section>
 
-   
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const rows = Array.from(document.querySelectorAll('#flightsTable tr[data-date]'));
+    const sortSelect = document.getElementById('sortByDate');
+    const filterSelect = document.getElementById('filterByAirline');
+    const tagSelect = document.getElementById('filterByTag');
 
-    
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    const tbody = document.querySelector('#flightsTable tbody') || document.querySelector('#flightsTable');
+
+    function updateTable() {
+
+        tbody.classList.add('tr-fade');
+
+        setTimeout(() => {
+            let filteredRows = rows;
+            const selectedAirline = filterSelect.value;
+            const selectedTag = tagSelect.value;
+
+            //filtre les compagnies
+            if (selectedAirline !== 'all') {
+                filteredRows = filteredRows.filter(row => row.dataset.airline === selectedAirline);
+            }
+
+            //filtrer les tags
+            if (selectedTag !== 'all') {
+                filteredRows = filteredRows.filter(row => {
+                    const tags = row.dataset.tags ? row.dataset.tags.split(',') : [];
+                    return tags.includes(selectedTag);
+                });
+            }
+
+            //trier par date
+            const sortedRows = filteredRows.sort((a, b) => {
+                const dateA = new Date(a.dataset.date);
+                const dateB = new Date(b.dataset.date);
+                return sortSelect.value === 'asc' ? dateA - dateB : dateB - dateA;
+            });
+
+            tbody.innerHTML = '';
+
+            if (filteredRows.length === 0) {
+                noResultsMessage.style.display = 'block';
+            } else {
+                noResultsMessage.style.display = 'none';
+
+                for (let i = 0; i < filteredRows.length; i++) {
+                    tbody.appendChild(filteredRows[i]);
+
+                    const currentDate = filteredRows[i].dataset.date;
+                    const nextDate = filteredRows[i + 1]?.dataset?.date;
+
+                    if (currentDate !== nextDate) {
+                        const spacer = document.createElement('tr');
+                        spacer.classList.add('spacer-row');
+                        spacer.innerHTML = `<td colspan="10" style="height:50px;"></td>`;
+                        tbody.appendChild(spacer);
+                    }
+                }
+            }
+
+            tbody.classList.remove('tr-fade');
+        }, 300);
+    }
+
+    sortSelect.addEventListener('change', updateTable);
+    filterSelect.addEventListener('change', updateTable);
+    tagSelect.addEventListener('change', updateTable);
+
+});
+</script>
+
 
 {% endblock %}

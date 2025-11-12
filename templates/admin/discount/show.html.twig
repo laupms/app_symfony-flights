@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discount{% endblock %}
+
+{% block body %}
+    <h1>Discount</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ discount.id }}</td>
+            </tr>
+            <tr>
+                <th>Airline</th>
+                <td>{{ discount.airline.name }}</td>
+            </tr>
+            <tr>
+                <th>Value</th>
+                <td>{{ discount.value }}</td>
+            </tr>
+            <tr>
+                <th>Date_start</th>
+                <td>{{ discount.dateStart ? discount.dateStart|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_end</th>
+                <td>{{ discount.dateEnd ? discount.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_discount') }}">back to list</a>
+
+    <a href="{{ path('admin_discount_edit', {'id': discount.id}) }}">edit</a>
+
+    {{ include('admin/discount/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,4 +1,7 @@
-<form method="post" action="{{ path('cities_delete', {'id': city.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette ville?');">
+<form method="post" action="{{ path('admin_cities_delete', {'id': city.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette ville ?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ city.id) }}">
-    <button class="btn btn-danger m-1"><i alt="Supprimer" class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
+
+    <button title="Supprimer" class="btn delete-btn actions-size m-1" aria-label="Supprimer">
+        <i alt="Supprimer" class="fa-solid fa-trash-can"></i>
+    </button>
 </form>

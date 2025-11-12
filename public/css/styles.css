@@ -1,45 +1,422 @@
+/* RESET */
+body {
+    font-family: Helvetica, sans-serif;
+}
+/* TITRES */
+h1{
+    font-size: 60px;
+    font-family: 'Changa One', sans-serif;
+}
+
+.welcome-flights{
+    color: #ffffff;
+    background-color: #003065;
+    padding: 8px;
+    margin: 8px;
+    border-radius: 12px;
+    font-size: 60px;
+    font-family: 'BP Imperial', sans-serif;
+}
+
+/* Police BP Imperial */
+@font-face {
+    font-family: 'BP Imperial';
+    src: url('/polices/BPimperial.ttf');
+}
+
+@font-face {
+    font-family: 'Changa One';
+    src: url('/polices/ChangaOne.ttf');
+}
+
+/* Bannière hero accueil */
+.hero {
+    background-image: url('../img/backgrounds/fond-1.webp');
+    height: 60vh;
+    background-position: bottom;
+}
+
+.hero-flights {
+    background-image: url('../img/backgrounds/fond-2.webp');
+    height: 40vh;
+    background-position: center;
+}
+
+.hero-login {
+    background-image: url('../img/backgrounds/fond-3.webp');
+    height: 80vh;
+    background-position: center;
+}
+.hero-login-content{
+    width: 80vh;
+}
+
+.hero-user{
+    background-image: url('../img/backgrounds/fond-3.webp');
+    height: 40vh;
+    background-position: center;
+}
+
+.hero-show{
+    background-image: url('../img/backgrounds/fond-4.webp');
+    height: 40vh;
+    background-position: bottom;
+}
+
+.hero-form{
+    background-image: url('../img/backgrounds/fond-4.webp');
+    height: 40vh;
+    background-position: bottom;
+}
+
+.hero-table{
+    background-image: url('../img/backgrounds/fond-6.webp');
+    height: 40vh;
+    background-position: center;
+}
+
+.hero-airline{
+    background-image: url('../img/backgrounds/fond-9.webp');
+    height: 40vh;
+    background-position: center;
+}
+
+.hero-airport{
+    background-image: url('../img/backgrounds/fond-7.webp');
+    height: 40vh;
+    background-position: center;
+}
+
+.hero-discount{
+    background-image: url('../img/backgrounds/fond-8.webp');
+    height: 40vh;
+    background-position: center;
+}
+
+/* Effets sur heros */
+.hero, .hero-flights, .hero-login, .hero-show, .hero-form, .hero-table, .hero-airline, .hero-airport, .hero-user, .hero-discount{
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero::before, .hero-flights::before, .hero-login::before, .hero-show::before, .hero-form::before, .hero-table::before, .hero.airline::before, .hero-airport::before, .hero-user::before, .hero-discount::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-flights-content, .hero-login-content, .hero-show-content, .hero-form-content, .hero-table-content, .hero-airline-content, .hero-airport-content, .hero-user-content, .hero-discount-content{
+    position: relative;
+    z-index: 0;
+    padding: 1rem;
+    text-align: center;
+    animation: fadeInUp 2s ease-out;
+    background-color: #27272763;
+    border-radius: 12px;
+}
+
+.hero-content{
+    position: relative;
+    z-index: 0;
+    padding: 2rem;
+    text-align: center;
+    animation: fadeInUp 2s ease-out;
+}
+
+    /* Animation titre */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* Menu principal */
+    /* Liens du menu */
 .navbar {
+    background-color: #272727;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 5px;
 }
 
 #navLinks {
     display: flex;
     justify-content: end;
     list-style: none;
-    gap: 20px;
+    gap: 30px;
 }
 
 .nav-link{
-    padding: 10px;
+    padding: 5px;
+    color: #ffffff;
+    transition: all 0.3s ease-in-out;
+
 }
 
-.nav-link.active{
-    background-color: #ffffff18;
-    border-radius: 4px;
+.nav-link.active, .nav-link:hover{
+    color: #d2d2d2 !important;
+    border-radius: 12px;
+    background-color: #303030;
 }
 
+.nav-link.show{
+    color: #d2d2d2 !important;
+}
+
+    /* Menu burger */
 .burger {
     display: none;
     flex-direction: column;
-    cursor: pointer;}
+    cursor: pointer;
 
-.burger div {
-    width: 25px;
-    height: 3px;
-    background: #ffffff;
-    margin: 4px;
-    transition: 0.3s;
+      background: none;
+        border: none;
 }
+
+.burger span {
+  width: 25px;
+  height: 3px;
+  background: #ffffff;
+  margin: 4px;
+  transition: 0.3s;
+}
+
+
+/* Animation effet “croix” */
+.burger[aria-expanded="true"] span:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+}
+.burger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.burger[aria-expanded="true"] span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px,-5px);
+}
+
+    /* Menus déroulants */
+.navbar .dropdown-menu{
+    animation: fadeIn 1s ease;
+}
+.navbar .dropdown-menu.show{
+    background-color: #272727;
+    padding: 5px;
+    border-style: none;
+}
+
+.dropdown-menu.show{
+    border-radius: 12px;
+    left: -50%;
+}
+
+.navbar-nav .dropdown-menu{
+    position: absolute;
+}
+
+.dropdown-item{
+    color: #ffffff;
+    padding:15px;
+}
+
+.dropdown-item:hover, .dropdown-item.active {
+    color: #d2d2d2;
+    background-color: #303030;
+    border-radius: 12px;
+}
+
+
+    /* Supprime la flèche par défaut du menu déroulant */
+.no-caret::after{
+    display: none !important;
+}
+
+    /* Listes déroulantes de tri */
+.form-select{
+    width: fit-content;
+}
+
+    /* Logos */
+.logo-footer{
+    width: 100px;
+}
+
+/* Animations */
+
+    /* Affichage progressif menu déroulant et burger*/
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+    /* Animation des cartes sur la page d'accueil */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+    /* Effet fondu à l'apparition/disparition des tableaux lors des tris */
+#airportTable tbody, #flightsTable tbody, #citiesTable tbody, #discountTable tbody, #airlineTable tbody{
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#airportTable tbody.tr-fade, #flightsTable tbody.tr-fade, #citiesTable tbody.tr-fade, #discountTable tbody.tr-fade, #airlineTable tbody.tr-fade{
+    opacity: 0;
+}
+
+
+/* Boutons */
+    /* Bouton bleu effet balayage */
+.btn-slide, .btn-slide-save, .btn-slide-accept, .btn-slide-refuse{
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 12px;
+    padding: 18px 36px;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+}
+
+.btn-slide-save{
+    margin: 3rem !important;
+}
+
+.btn-slide {
+    box-shadow: inset 0 0 0 0 #1d5087;
+}
+
+.btn-slide-save {
+    box-shadow: inset 0 0 0 0 #aad7aa;
+}
+
+.btn-slide-accept {
+    box-shadow: inset 0 0 0 0 #aad7aa;
+}
+
+.btn-slide-refuse {
+    box-shadow: inset 0 0 0 0 #fc7070;
+}
+
+.slide-right, .slide-right-save{
+    color: #000000;
+}
+
+.slide-accept, .slide-refuse{
+    color:#ffffff;
+}
+
+.slide-right:hover {
+    box-shadow: inset 400px 0 0 0 #003065;
+    color: #ffffff;
+}
+
+.slide-right-save:hover {
+    box-shadow: inset 400px 0 0 0 #004c00;
+    color: #ffffff;
+}
+
+.slide-accept:hover {
+    box-shadow: inset 400px 0 0 0 #004c00;
+    color: #ffffff;
+}
+
+.slide-refuse:hover {
+    box-shadow: inset 400px 0 0 0 #a12d2d;
+    color: #ffffff;
+}
+
+
+
+    /* Bontons d'actions (voir/modifier/supprimer) */
+.actions-size{
+    width: 50px;
+    height:50px;
+}
+
+.actions{
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    flex-direction:row;
+}
+
+.actions-flex{
+    display: none;
+}
+
+.btn-center{
+    justify-self: center;
+}
+
+    /* Bouton supprimer */
+    .delete-btn{
+        background-color: #7a1c1ca8;
+        color: #ffffff;
+        transition: 0.8s;
+
+    }
+    .delete-btn:hover{
+        background-color: #a12d2d;
+        color: #ffffff;
+    }
+    /* Bonton voir */
+    .show-btn{
+        background-color: #1d5087c9;
+        transition: 0.8s;
+    }
+    .show-btn:hover{
+        background-color: #003065;
+    }
+    /* Bonton modifier */
+    .edit-btn{
+        background-color: #003065bf;
+        transition: 0.8s;
+    }
+    .edit-btn:hover{
+        background-color: #1d5087;
+    }
+
 
 /* Messages d'erreur formulaires */
 .error{
     color: rgb(255, 0, 0);
     display: flex;
+    animation: fadeInError 0.8s ease forwards;
+}
+
+    /* Animation douce */
+@keyframes fadeInError {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .error ul{
@@ -53,15 +430,28 @@
     border-radius: 4px;
 }
 
-/* Checkboxes réduction vol + rôle utilisateur + termes inscription utilisateur */
-input#flights_discount{
-     margin: 10px;
+.error ul li:hover {
+    background-color: #ffdada;
+    transition: background-color 0.8s ease;
+    cursor: pointer;
 }
 
-input#flights_discount:checked{
-    accent-color:black;
+.error-discount{
+    color: rgb(255, 0, 0);
+    display: flex;
+    animation: fadeInError 0.8s ease forwards;
+    background-color: #e0e0e0;
+    padding: 5px;
+    border-radius: 4px;
 }
 
+.error-discount:hover{
+    background-color: #ffdada;
+    transition: background-color 0.8s ease;
+    cursor: pointer;
+}
+
+/* Checkboxes tags + rôle utilisateur + termes inscription utilisateur */
 input#registration_form_roles_0{
     margin: 5px 10px;
 }
@@ -82,19 +472,119 @@ input#registration_form_agreeTerms:checked{
     accent-color:black;
 }
 
+.tags-checkboxes{
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-check input:checked{
+    accent-color: black;
+}
+
+
+/* Formulaires */
+label{
+    padding-top: 20px;
+}
+
+/* Tableau vols */
+.title-info{
+    color: #c3c3c3 !important;
+    font-size: 80%;
+}
+
+td{
+    border-style: none;
+}
+
+tr{
+    text-align: start;
+    padding: 20px;
+}
+
+.table-width{
+    width:90%;
+    justify-self: center;
+    margin: 40px 0;
+}
+
+.row-show{
+    display:flex; 
+    flex-direction:row; 
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+/* Nom utilisateur connecté caché */
+#user-conn{
+    display:none;
+    color: #272727;
+}
+
+/* Tags */
+
+
+/* Footer */
+.nav-footer{
+    gap: 20px;
+    display: flex;
+}
+
+.nav-footer-item{
+    list-style: none;
+}
+
+/* Focus pour accessibilité */
+button:focus, a:focus, input:focus, .nav-link:focus, #acceptCookies:focus, #rejectCookies:focus,.burger:focus{
+    outline: 2px solid #1e90ff;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.nav-link:focus{
+    color:#ffffff;
+}
+
 /* Media queries */
 
 /* Version tablette landscape */
 @media screen and (max-width: 1024px) {
+    h1{
+        font-size: 50px;
+    }
     .nav-link{
-        font-size: 11px;
+        font-size: 14px;
+    }
+    .hero-flights {
+        height: 40vh;
+    }
+    .actions-size{
+        width: 40px;
+        height:40px;
+        padding:0;
+    }
+    .actions{
+        flex-direction:column;
+    }
+
+    .agree-terms{
+        display: flex;
+        align-items: baseline;
+    }
+
+    .tags-checkboxes{
+        flex-direction: column;
+    }
+
+    .nav-footer{
+        flex-direction: column;
     }
 }
 
 /* Version tablette et mobile */
 @media screen and (max-width: 768px) {
     table{
-        font-size: 10px;
+        font-size: 12px;
     }
     .nav-link{
         font-size: 14px;
@@ -103,12 +593,15 @@ input#registration_form_agreeTerms:checked{
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 70px;
+        top: 3.85rem;
         right: 0;
-        background: #21252a;
+        background: #272727;
         padding: 40px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        text-align: center;
+        text-align: start;
+        z-index: 1;
+        animation: fadeIn 1s ease;
+        border-radius: 5px;
     }
 
     #navLinks.active {
@@ -118,5 +611,47 @@ input#registration_form_agreeTerms:checked{
     .burger {
         display: flex;
         align-items: center;
+        cursor: pointer;
+    }
+
+    .logo-footer{
+        width: 80px;
+    }
+
+    .footer-size{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .footer-size ul{
+        text-align: center;
+    }
+
+    /* Nom utilisateur connecté affiché */
+    #user-conn{
+        display:flex;
+        justify-content: flex-end;
+    }
+
+    .actions-none{
+        display: none;
+    }
+    .actions-flex{
+        display: flex;
+        align-items: center;
+    }
+
+    .actions-size{
+        width: 30px;
+        height:30px;
+        padding:0;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    div#registration_form_roles.form-control{
+        font-size: 80%;
     }
 }

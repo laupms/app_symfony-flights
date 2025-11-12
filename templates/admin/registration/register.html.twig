@@ -3,12 +3,16 @@
 {% block title %}flights - Nouvel ulitisateur{% endblock %}
 
 {% block body %}
-   
-    <section class="container justify-content-center">
-        <div class="row">
-            <div class="col text-left">
 
-                <h1 class="mb-3">Création d'un nouvel utilisateur</h1>
+<section class="hero-form">
+    <div class="hero-form-content">
+        <h1>Nouvel utilisateur</h1>
+    </div>
+</section>
+   
+    <section class="container py-5 justify-content-center">
+        <div class="row justify-content-center">
+            <div class="col-7 text-left" tyle="padding:20px;">
 
                 {{ form_start(registrationForm) }}
 
@@ -16,35 +20,33 @@
                 <div class="mb-3">
                     {{ form_label(registrationForm.username)}}
                     {{ form_widget(registrationForm.username) }}
-                    <div class="error w-50 m-1" style="font-size:10px;color:#f73123;">{{ form_errors(registrationForm.username) }}</div>
+                    <div class="error m-1">{{ form_errors(registrationForm.username) }}</div>
                 </div>
                 <div class="mb-3">
                     {{ form_label(registrationForm.plainPassword) }}
                     {{ form_widget(registrationForm.plainPassword) }}
-                    <div class="error w-50 m-1" style="font-size:10px;color:#f73123;">{{ form_errors(registrationForm.plainPassword) }}</div>
+                    <div class="error m-1">{{ form_errors(registrationForm.plainPassword) }}</div>
                 </div>
                 <div class="mb-3">
                     {{ form_label(registrationForm.roles) }}
                     {{ form_widget(registrationForm.roles) }}
                 </div>
-                 <div class="mb-3 p-2">
+                 <div class="mb-3 agree-terms">
                     {{ form_widget(registrationForm.agreeTerms) }}
                     {{ form_label(registrationForm.agreeTerms) }}
-
-                    <div class="error w-50 m-1" style="font-size:10px;color:#f73123;">{{ form_errors(registrationForm.agreeTerms) }}</div>
+                    <div class="error m-1">{{ form_errors(registrationForm.agreeTerms) }}</div>
                 </div>
 
+                <div style="justify-self:center;">
+                    <button type="submit" class="btn btn-slide-save slide-right-save mt-3">{{ button_label|default('Enregistrer') }}</button>
+                </div>
 
-                    <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
              {{ form_end(registrationForm) }}
             
             </div>
+
             <div class="return d-flex justify-content-end">
-                <button class="btn btn-secondary d-flex">
-                    <a style="text-decoration:none; color:#fff;" href="{{ path('admin_user_') }}">
-                        <i class="fa-solid fa-rotate-left" style="color: #fff;"></i>
-                    Annuler</a>
-                </button>
+                <a class="btn-slide slide-right m-3" href="{{ path('admin_user')}}" style="text-decoration:none;" ><i class="fa-solid fa-rotate-left"></i> Retour à la liste</a>
             </div>
         </div>
     </section>

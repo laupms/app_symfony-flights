@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Entity;
+use App\Entity\Airline;
+use App\Entity\Airport;
 
-use App\Entity\Cities;
 use App\Repository\FlightsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,30 +26,34 @@ class Flights
     #[ORM\Column(length: 6)]
     private ?string $num = null;
 
+    #[ORM\ManyToOne(targetEntity: Airline::class, inversedBy:'name')]
+    #[ORM\JoinColumn(nullable:false, name:'airline')]
+    private $airline = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $departure = null;
 
-    #[ORM\ManyToOne(targetEntity: Cities::class, inversedBy:'name')]
-    #[ORM\JoinColumn(nullable:false, name:'city_departure')]
-    private $city_departure = null;
 
-    //pour vérifier que la ville de départ soit différente de la ville d'arrivée
+    //pour vérifier que l'aéroport de départ soit différent de l'aéroport d'arrivé
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context): void
     {
-        if ($this->city_departure && $this->city_arrival && $this->city_departure === $this->city_arrival) {
+        if ($this->airport_departure && $this->airport_arrival && $this->airport_departure === $this->airport_arrival) {
             $context->buildViolation("❗️ La ville d'arrivée doit être différente de la ville de départ.")
-                ->atPath('city_arrival') // le message sera affiché sous le champ de la ville d’arrivée
+                ->atPath('airport_arrival') // le message sera affiché sous le champ de la ville d’arrivée
                 ->addViolation();
         }
     }
 
+    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy:'name')]
+    #[ORM\JoinColumn(nullable:false, name:'airport_departure')]
+    private $airport_departure = null;
+
+
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $arrival = null;
 
-    #[ORM\ManyToOne(targetEntity: Cities::class, inversedBy:'name')]
-    #[ORM\JoinColumn(nullable:false, name:'city_arrival')]
-    private $city_arrival = null;
 
     //pour vérifier que la date/heure d'arrivée soit postérieure à la date/heure de départ
     #[Assert\Callback]
@@ -58,15 +65,26 @@ class Flights
                     ->addViolation();
     }}}
 
+    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy:'name')]
+    #[ORM\JoinColumn(nullable:false, name:'airport_arrival')]
+    private $airport_arrival = null;
+
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private ?string $price = null;
 
     #[ORM\Column]
-    private ?bool $discount = null;
-
-    #[ORM\Column]
     private ?int $nb_seat = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $priceAfterDiscount = null;
+
+    #[ORM\ManyToMany(targetEntity: Tags::class, mappedBy: 'flights')]
+    private Collection $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +103,18 @@ class Flights
         return $this;
     }
 
+    public function getAirline(): ?Airline
+    {
+        return $this->airline;
+    }
+
+    public function setAirline(?Airline $airline): self
+    {
+        $this->airline = $airline;
+
+        return $this;
+    }
+
     public function getDeparture(): ?\DateTimeInterface
     {
         return $this->departure;
@@ -97,14 +127,14 @@ class Flights
         return $this;
     }
 
-    public function getCityDeparture(): ?Cities
+    public function getAirportDeparture()
     {
-        return $this->city_departure;
+        return $this->airport_departure;
     }
 
-    public function setCityDeparture(?Cities $city_departure): self
+    public function setAirportDeparture($airport_departure): static
     {
-        $this->city_departure = $city_departure;
+        $this->airport_departure = $airport_departure;
 
         return $this;
     }
@@ -121,14 +151,14 @@ class Flights
         return $this;
     }
 
-    public function getCityArrival()
+    public function getAirportArrival()
     {
-        return $this->city_arrival;
+        return $this->airport_arrival;
     }
 
-    public function setCityArrival($city_arrival): static
+    public function setAirportArrival($airport_arrival): static
     {
-        $this->city_arrival = $city_arrival;
+        $this->airport_arrival = $airport_arrival;
 
         return $this;
     }
@@ -145,18 +175,6 @@ class Flights
         return $this;
     }
 
-    public function isDiscount(): ?bool
-    {
-        return $this->discount;
-    }
-
-    public function setDiscount(bool $discount): static
-    {
-        $this->discount = $discount;
-
-        return $this;
-    }
-
     public function getNbSeat(): ?int
     {
         return $this->nb_seat;
@@ -165,6 +183,45 @@ class Flights
     public function setNbSeat(int $nb_seat): static
     {
         $this->nb_seat = $nb_seat;
+
+        return $this;
+    }
+
+    public function getPriceAfterDiscount(): ?string
+    {
+        return $this->priceAfterDiscount;
+    }
+
+    public function setPriceAfterDiscount(string $priceAfterDiscount): static
+    {
+        $this->priceAfterDiscount = $priceAfterDiscount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tags>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tags $tag): static
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addFlight($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tags $tag): static
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeFlight($this);
+        }
 
         return $this;
     }

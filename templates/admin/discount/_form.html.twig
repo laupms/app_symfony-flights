@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+
+    {% for message in app.flashes('error') %}
+        <div class="error-discount text-center m-1">{{ message }}</div>
+    {% endfor %}
+
+    {{ form_label(form.airline)}}
+    {{ form_widget(form.airline) }}
+
+    {{ form_label(form.value)}}
+    {{ form_widget(form.value) }}
+    <div class="error m-1">{{ form_errors(form.value)}}</div>
+
+    {{ form_label(form.date_start)}}
+    {{ form_widget(form.date_start) }}
+    <div class="error m-1">{{ form_errors(form.date_start)}}</div>
+
+    {{ form_label(form.date_end)}}
+    {{ form_widget(form.date_end) }}
+    <div class="error m-1">{{ form_errors(form.date_end)}}</div>
+
+
+    <div style="justify-self:center;">
+        <button class="btn btn-slide-save slide-right-save mt-3">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form) }}

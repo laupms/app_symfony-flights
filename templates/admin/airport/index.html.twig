@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}flights - Liste des aéroports{% endblock %}
+
+{% block body %}
+
+<section class="hero-airport">
+    <div class="hero-airport-content">
+        <h1>Aeroports</h1>
+    </div>
+</section>
+
+<div class="d-flex justify-content-between align-items-center mb-3 p-3">
+    <div class="d-flex gap-3 mb-4">
+        <select id="sortByCountry" class="form-select">
+            <option value="az">Pays : A → Z</option>
+            <option value="za">Pays : Z → A</option>
+        </select>
+        <select id="sortByCode" class="form-select">
+            <option value="az">Code : A → Z</option>
+            <option value="za">Code : Z → A</option>
+        </select>
+    </div>
+</div>
+
+<section class="container pb-5">
+    <div class="row justify-content-center">
+        <div class="col-10">
+
+                <table id="airportTable" class="table">
+                    <thead style="border-style:hidden;">
+                        <tr>
+                            <th class="title-info">Aéroport</th>
+                            <th class="title-info">Code IATA</th>
+                            <th class="title-info">Ville</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for airport in airports %}
+                        <tr data-country="{{ airport.cityId.country }}" data-code="{{ airport.code }}" style="vertical-align:middle;">
+                            <td>{{ airport.name }}</td>
+                            <td>{{ airport.code }}</td>
+                            <td>{{ airport.cityId }}, {{ airport.cityId.country}}</td>
+                            <td class="d-flex actions">
+                                <button title="Modifier" class="btn edit-btn actions-size m-1" title="Modifier">
+                                    <a href="{{ path('admin_airport_edit', {'id': airport.id}) }}" style="text-decoration:none; color:#000" >
+                                        <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                                    </a>
+                                </button>
+
+                                {{ include('admin/airport/_delete_form.html.twig') }}
+                            </td>
+                        </tr>
+                        <tr class="spacer" style="height:50px;"></tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" style="padding:30px;text-align:left;">Aucuns aéroports enregistrés !<br>Ajoutez-en un nouveau ici <i class="fa-solid fa-turn-down" style="color: #000000;"></i></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+                <div class="btn-center">
+                    <a class="btn-slide slide-right" href="{{ path('admin_airport_new')}}" style="text-decoration:none;"><i class="fa-solid fa-plus p-2"></i>Créer un nouvel aéroport</a>
+                </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const dataRows = Array.from(document.querySelectorAll('#airportTable tbody tr[data-country]'));
+
+    const tbody = document.querySelector('#airportTable tbody');
+
+    const sortByCountry = document.getElementById('sortByCountry');
+    const sortByCode = document.getElementById('sortByCode');
+
+
+
+    function updateTableByCountry() {
+        let sortedRows = [...dataRows];
+
+        sortedRows.sort((a, b) => {
+            const countryA = a.dataset.country.toLowerCase();
+            const countryB = b.dataset.country.toLowerCase();
+
+            if (sortByCountry.value === 'az') {
+                return countryA.localeCompare(countryB);
+            } else if (sortByCountry.value === 'za') {
+                return countryB.localeCompare(countryA);
+            }
+        });
+        //créer le tr vide pour l'espacement
+        renderTable(sortedRows);
+    }
+
+
+    function updateTableByCode() {
+        let sortedRows = [...dataRows];
+
+        sortedRows.sort((a, b) => {
+            const codeA = a.dataset.code.toLowerCase();
+            const codeB = b.dataset.code.toLowerCase();
+
+            if (sortByCode.value === 'az') {
+                return codeA.localeCompare(codeB);
+            } else if (sortByCode.value === 'za') {
+                return codeB.localeCompare(codeA);
+            }
+        });
+        renderTable(sortedRows);
+    }
+
+    function renderTable(sortedRows) {
+
+        tbody.classList.add('tr-fade');
+
+        setTimeout(() => {
+            tbody.innerHTML = '';
+            sortedRows.forEach((row) => {
+                tbody.appendChild(row);
+                const spacer = document.createElement('tr');
+                spacer.classList.add('spacer');
+                spacer.innerHTML = '<td colspan="4" style="height:50px;"></td>';
+                tbody.appendChild(spacer);
+            });
+            tbody.classList.remove('tr-fade');
+        }, 300);
+    }
+
+    sortByCountry.addEventListener('change', updateTableByCountry);
+    sortByCode.addEventListener('change', updateTableByCode);
+
+
+});
+</script>
+
+{% endblock %}

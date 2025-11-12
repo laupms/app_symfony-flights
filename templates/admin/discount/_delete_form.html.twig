@@ -1,0 +1,7 @@
+<form method="post" action="{{ path('admin_discount_delete', {'id': discount.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette réduction ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ discount.id) }}">
+
+    <button title="Supprimer" class="btn delete-btn actions-size m-1" aria-label="Supprimer">
+        <i alt="Supprimer" class="fa-solid fa-trash-can"></i>
+    </button>
+</form>

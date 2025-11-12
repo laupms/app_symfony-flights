@@ -4,22 +4,24 @@
 
 {% block body %}
 
-<section class="container justify-content-center">
-    <div class="row">
-            <div class="col text-left">
-                 <h1 class="mb-3">Création d'une ville</h1>
-                
+<section class="hero-form">
+    <div class="hero-form-content">
+        <h1>Nouvelle ville</h1>
+    </div>
+</section>
+
+<section class="container py-5 justify-content-center">
+    <div class="row justify-content-center">
+            <div class="col-6 text-left" style="padding:20px;">
+            
                  {{ include('admin/cities/_form.html.twig') }}
                  
             </div>
+
             <div class="return d-flex justify-content-end">
-                <button class="btn btn-secondary d-flex">
-                    <a style="text-decoration:none; color:#fff;" href="{{ path('cities_index') }}">
-                        <i class="fa-solid fa-rotate-left" style="color: #fff;"></i>
-                    Annuler</a>
-                </button>
+                <a class="btn-slide slide-right m-3" href="{{ path('admin_cities')}}" style="text-decoration:none;" ><i class="fa-solid fa-rotate-left"></i> Retour à la liste</a>
             </div>
-    
+
     </div>
 </section>
 {% endblock %}

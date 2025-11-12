@@ -19,6 +19,9 @@ class Cities
     #[ORM\Column(length: 255, name:'name')]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $country = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +43,18 @@ class Cities
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
+
+        return $this;
     }
 
 }
