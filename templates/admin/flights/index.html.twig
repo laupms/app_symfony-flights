@@ -47,7 +47,7 @@
         
 
                 {% for flight in flights %}
-                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airline.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
+                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airlineId.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
                             <td colspan="4">
                                 {% if flight.tags|length > 0 %}
                                     {% for tag in flight.tags %}
@@ -72,7 +72,7 @@
                             </td>
                         </tr>
 
-                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airline.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
+                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airlineId.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
 
                             <td><span class="title-info">Numéro de vol</span><br><span style="font-size:30px;">{{ flight.num }}</span></td>
                             <td><span class="title-info">Départ</span><br>{{ flight.departure ? flight.departure|date('d/m/Y') : '' }} à {{ flight.departure ? flight.departure|date('H:i') : '' }} <br> {{ flight.airportDeparture.name }}</td>
@@ -95,9 +95,9 @@
 
                             </td>
                         </tr>
-                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airline.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
+                        <tr data-date="{{ flight.departure|date('Y-m-d H:i') }}" data-airline="{{ flight.airlineId.name }}" data-tags="{{ flight.tags|map(tag => tag.name)|join(',') }}">
                             <td>
-                                <img src="{{ asset('img/logo-airlines/' ~ flight.airline.logo) }}" alt="{{ flight.airline.name }}" width="100" title="{{ flight.airline.name }}">
+                                <img src="{{ asset('img/logo-airlines/' ~ flight.airlineId.logo) }}" alt="{{ flight.airlineId.name }}" width="100" title="{{ flight.airlineId.name }}">
                             </td>
                             <td>
                                 {% if flight.priceAfterDiscount is not null and flight.priceAfterDiscount < flight.price %}

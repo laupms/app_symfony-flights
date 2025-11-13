@@ -44,7 +44,7 @@ class FlightsType extends AbstractType
                  
             ])
 
-            ->add('airline', EntityType::class, [
+            ->add('airline_id', EntityType::class, [
                 'class' => Airline::class,
                 'label' => 'Compagnie aérienne',
                 'choice_label' => function ($airline) {

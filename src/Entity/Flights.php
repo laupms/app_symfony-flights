@@ -27,8 +27,8 @@ class Flights
     private ?string $num = null;
 
     #[ORM\ManyToOne(targetEntity: Airline::class, inversedBy:'name')]
-    #[ORM\JoinColumn(nullable:false, name:'airline')]
-    private $airline = null;
+    #[ORM\JoinColumn(nullable:false, name:'airline_id')]
+    private $airline_id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $departure = null;
@@ -103,14 +103,14 @@ class Flights
         return $this;
     }
 
-    public function getAirline(): ?Airline
+    public function getAirlineId(): ?Airline
     {
-        return $this->airline;
+        return $this->airline_id;
     }
 
-    public function setAirline(?Airline $airline): self
+    public function setAirlineId(?Airline $airline_id): self
     {
-        $this->airline = $airline;
+        $this->airline_id = $airline_id;
 
         return $this;
     }

@@ -24,24 +24,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class AdminController extends AbstractController
 {
-    // //liste villes
-    // #[Route('/cities', name: 'cities')]
-    // public function citiesList(CitiesRepository $cities){
-    //     return $this->render("admin/cities/index.html.twig", [
-    //         'cities' => $cities ->findAll()
-    //     ]);
-    // }
-
-    // //liste utilisateurs
-    // #[Route('/user', name: 'user')]
-    // public function userList(UserRepository $user){
-
-        
-    //     return $this->render("admin/user/index.html.twig", [
-    //         'user' => $user ->findAll()
-    //     ]);
-    // }
-
     //liste vols
     #[Route('/flights', name: 'flights')]
     public function flightsList(FlightsRepository $flights, AirlineRepository $airlineRepository):Response{
@@ -127,15 +109,15 @@ class AdminController extends AbstractController
     private function applyDiscount(Flights $flight, DiscountRepository $discountRepository): void
     {
         $price = $flight->getPrice();
-        $airline = $flight->getAirline();
+        $airline = $flight->getAirlineId();
         $departure = $flight->getDeparture();
 
-        $discount = $discountRepository->findOneBy(['airline' => $airline]);
+        $discount = $discountRepository->findOneBy(['airline_id' => $airline]);
 
         // Vérification que la réduction est valide
         if (
             $discount &&
-            $discount->getAirline() === $flight->getAirline() &&
+            $discount->getAirlineId() === $flight->getAirlineId() &&
             $discount->getDateStart() <= $departure &&
             $discount->getDateEnd() >= $departure
         ) {
