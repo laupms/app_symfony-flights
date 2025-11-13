@@ -34,15 +34,15 @@ class DiscountController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $airline = $discount->getAirline();
+            $airline = $discount->getAirlineId();
             $start = $discount->getDateStart();
             $end = $discount->getDateEnd();
 
             // Vérifie si une réduction existe déjà pour la même compagnie et des dates qui se chevauchent
             $existingDiscounts = $discountRepository->createQueryBuilder('d')
-                ->where('d.airline = :airline')
+                ->where('d.airline_id = :airline_id')
                 ->andWhere('(:start BETWEEN d.date_start AND d.date_end OR :end BETWEEN d.date_start AND d.date_end OR (d.date_start BETWEEN :start AND :end))')
-                ->setParameter('airline', $airline)
+                ->setParameter('airline_id', $airline)
                 ->setParameter('start', $start)
                 ->setParameter('end', $end)
                 ->getQuery()
@@ -85,16 +85,16 @@ class DiscountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-            $airline = $discount->getAirline();
+            $airline = $discount->getAirlineId();
             $start = $discount->getDateStart();
             $end = $discount->getDateEnd();
 
             // Vérifie si une réduction existe déjà pour la même compagnie et des dates qui se chevauchent
             $existingDiscounts = $discountRepository->createQueryBuilder('d')
-                ->where('d.airline = :airline')
+                ->where('d.airline_id = :airline_id')
                 ->andWhere('d.id != :currentId')
                 ->andWhere('(:start BETWEEN d.date_start AND d.date_end OR :end BETWEEN d.date_start AND d.date_end OR (d.date_start BETWEEN :start AND :end))')
-                ->setParameter('airline', $airline)
+                ->setParameter('airline_id', $airline)
                 ->setParameter('start', $start)
                 ->setParameter('end', $end)
                 ->setParameter('currentId', $discount->getId())

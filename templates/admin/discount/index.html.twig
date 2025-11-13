@@ -44,9 +44,9 @@
 
                 {% for discount in discounts %}
 
-                    <tr data-airline="{{ discount.airline.name }}" data-date="{{ discount.dateStart|date('d-m-Y') }}">
+                    <tr data-airline="{{ discount.airlineId.name }}" data-date="{{ discount.dateStart|date('d-m-Y') }}">
                         <td>- {{ discount.value }} €</td>
-                        <td><img src="{{ asset('img/logo-airlines/' ~ discount.airline.logo) }}" alt="{{ discount.airline.name }}" width="100"></td>
+                        <td><img src="{{ asset('img/logo-airlines/' ~ discount.airlineId.logo) }}" alt="{{ discount.airlineId.name }}" width="100"></td>
                         <td>Du {{ discount.dateStart ? discount.dateStart|date('d/m/Y') : '' }} au {{ discount.dateEnd ? discount.dateEnd|date('d/m/Y') : '' }}</td>
 
                         <td class="d-flex actions">

@@ -25,7 +25,7 @@ class DiscountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('airline', EntityType::class, [
+            ->add('airline_id', EntityType::class, [
                 'class' => Airline::class,
                 'choice_label' => 'name',
                 'choice_label' => function ($airline) {
